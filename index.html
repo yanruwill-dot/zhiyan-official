@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智焰科技 ZHIYAN | AI时代的生产力引擎</title>
+    <meta name="description" content="智焰科技 - AI时代的生产力引擎。连接全球最前沿的AI能力与中国企业的真实需求。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --surface: #0a0a0a;
+            --surface-elevated: #141414;
+            --border: rgba(255,255,255,0.08);
+            --border-hover: rgba(255,255,255,0.15);
+            --white: #ffffff;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255,255,255,0.7);
+            --text-tertiary: rgba(255,255,255,0.5);
+            --accent: #2997ff;
+            --accent-glow: rgba(41,151,255,0.4);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background: var(--black);
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--black);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        /* Canvas Background */
+        #constellation {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.25rem 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--white);
+        }
+
+        .nav-brand span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 1.5rem 6rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(41,151,255,0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-inner {
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.2s;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.85) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.4s;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            font-weight: 400;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.6s;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.8s;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-num {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sections */
+        section {
+            padding: 8rem 0;
+            position: relative;
+            z-index: 1;
+            background: var(--black);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+            margin-top: 4rem;
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+        }
+
+        .about-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Orbit Animation */
+        .orbit {
+            position: relative;
+            width: 320px;
+            height: 320px;
+        }
+
+        .orbit-ring {
+            position: absolute;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            animation: spin 30s linear infinite;
+        }
+
+        .orbit-1 {
+            width: 100%;
+            height: 100%;
+        }
+
+        .orbit-2 {
+            width: 65%;
+            height: 65%;
+            top: 17.5%;
+            left: 17.5%;
+            animation-direction: reverse;
+            animation-duration: 20s;
+        }
+
+        .orbit-3 {
+            width: 35%;
+            height: 35%;
+            top: 32.5%;
+            left: 32.5%;
+            animation-duration: 12s;
+        }
+
+        .orbit-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .orbit-1 .orbit-dot { top: -5px; left: 50%; }
+        .orbit-2 .orbit-dot { bottom: 10%; right: 15%; }
+        .orbit-3 .orbit-dot { top: 50%; left: -5px; }
+
+        .orbit-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 800;
+            opacity: 0.1;
+            letter-spacing: 0.1em;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+            max-width: 900px;
+        }
+
+        .team-card {
+            display: flex;
+            gap: 1.5rem;
+            padding: 2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.4s ease;
+        }
+
+        .team-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-4px);
+            background: var(--surface-elevated);
+        }
+
+        .team-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #0066cc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .team-info h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .team-title {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .team-info p {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            line-height: 1.6;
+        }
+
+        /* Products Section */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .product-card {
+            padding: 2.5rem 2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.4s ease;
+        }
+
+        .product-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 30px rgba(41,151,255,0.1);
+        }
+
+        .product-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(41,151,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--accent);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .product-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-card p {
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .product-meta {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* Tools Section */
+        .tools-section {
+            padding: 6rem 0;
+            background: var(--surface);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .tool-item {
+            padding: 1.25rem;
+            background: var(--black);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tool-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .tool-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .tool-vendor {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 6rem 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .stat-num {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-top: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* Industries Section */
+        .industries-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .industry-item {
+            padding: 1.5rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .industry-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .industry-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .industry-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Clients Section */
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .client-card {
+            padding: 2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .client-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .client-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .client-industry {
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .client-result {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 10rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .cta-glow {
+            position: absolute;
+            width: 600px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(41,151,255,0.1) 0%, transparent 60%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--accent);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(41,151,255,0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 50px rgba(41,151,255,0.5);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-brand {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .footer-copy {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .industries-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .clients-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .industries-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="constellation"></canvas>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-inner">
+            <div class="nav-brand">ZHI<span>YAN</span></div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#tools">Tools</a></li>
+                <li><a href="#clients">Clients</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <p class="hero-label">AI时代的生产力引擎</p>
+            <h1>智焰科技</h1>
+            <p>连接全球最前沿的AI能力与中国企业的真实需求<br>从"知道AI"到"用好AI"，提供完整的AI进化体系</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-num">50+</div>
+                    <div class="hero-stat-label">企业客户</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">10,000+</div>
+                    <div class="hero-stat-label">学员</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">100+</div>
+                    <div class="hero-stat-label">工具整合</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item reveal">
+                    <div class="stat-num">50+</div>
+                    <div class="stat-label">付费企业客户</div>
+                </div>
+                <div class="stat-item reveal">
+                    <div class="stat-num">10,000+</div>
+                    <div class="stat-label">AI操盘手培养</div>
+                </div>
+                <div class="stat-item reveal">
+                    <div class="stat-num">100+</div>
+                    <div class="stat-label">全球AI工具整合</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <div class="container">
+            <div class="section-label reveal">About</div>
+            <h2 class="section-title reveal">关于智焰</h2>
+            <p class="section-desc reveal">智焰科技是AI时代的生产力引擎，由两位深耕技术与商业的创始人联合创立。我们致力于连接全球最前沿的AI能力与中国企业的真实需求，从认知启蒙到落地交付，提供完整的AI进化体系。</p>
+
+            <div class="about-grid">
+                <div class="about-text reveal">
+                    <p>我们不仅拥有全球顶尖的技术视野，更具备深厚的商业实战功底。智焰科技是AI时代的连接者，将硅谷最前沿的AI工具转化为中国企业与个人的核心竞争力。</p>
+                    <p>从"知道AI"到"用好AI"，我们提供的是一套完整的AI进化体系，帮助企业和个人真正掌握AI工具，提升10倍生产力。</p>
+                </div>
+                <div class="about-visual reveal">
+                    <div class="orbit">
+                        <div class="orbit-ring orbit-1"><div class="orbit-dot"></div></div>
+                        <div class="orbit-ring orbit-2"><div class="orbit-dot"></div></div>
+                        <div class="orbit-ring orbit-3"><div class="orbit-dot"></div></div>
+                        <div class="orbit-center">AI</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section id="team">
+        <div class="container">
+            <div class="section-label reveal">Founders</div>
+            <h2 class="section-title reveal">创始团队</h2>
+
+            <div class="team-grid">
+                <div class="team-card reveal">
+                    <div class="team-avatar">颜</div>
+                    <div class="team-info">
+                        <h3>颜汝</h3>
+                        <p class="team-title">创始人兼CEO</p>
+                        <p>智焰科技CEO / AI先行者社群发起人<br>谷歌全球AI工程师认证 / 清华认证AI讲师<br>视频号教育图书类目TOP3 MCN合伙人</p>
+                    </div>
+                </div>
+                <div class="team-card reveal">
+                    <div class="team-avatar">彭</div>
+                    <div class="team-info">
+                        <h3>彭珈琬</h3>
+                        <p class="team-title">创始合伙人</p>
+                        <p>曾管理千人团队<br>知名投资公司原VP副总裁<br>业绩千万+</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section id="products">
+        <div class="container">
+            <div class="section-label reveal">Products</div>
+            <h2 class="section-title reveal">产品体系</h2>
+
+            <div class="products-grid">
+                <div class="product-card reveal">
+                    <div class="product-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.42a12.08 12.08 0 01.67 5.54A8 8 0 0112 20a8 8 0 01-5.83-2.88 12.08 12.08 0 01.67-5.54L12 14z"/><path d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.42a12.08 12.08 0 01.67 5.54A8 8 0 0112 20a8 8 0 01-5.83-2.88 12.08 12.08 0 01.67-5.54L12 14z"/></svg>
+                    </div>
+                    <h3>AI先行者学院</h3>
+                    <p>面向个人的AI实操培训，线下闭门会+全年复训，手把手带你重塑工作流</p>
+                    <div class="product-meta">面向个人</div>
+                </div>
+                <div class="product-card reveal">
+                    <div class="product-icon">
+                        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                    </div>
+                    <h3>企业AI战略内训</h3>
+                    <p>面向企业CEO及核心管理层，3天2夜高密度集训，建立AI认知框架</p>
+                    <div class="product-meta">面向企业</div>
+                </div>
+                <div class="product-card reveal">
+                    <div class="product-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+                    </div>
+                    <h3>AI智能体定制</h3>
+                    <p>深度融合企业私有数据，构建专属AI员工，1个Agent=30人团队产能</p>
+                    <div class="product-meta">面向企业</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools -->
+    <section id="tools" class="tools-section">
+        <div class="container">
+            <div class="section-label reveal">AI Ecosystem</div>
+            <h2 class="section-title reveal">AI能力金字塔</h2>
+            <p class="section-desc reveal">智焰科技深度整合全球AI工具生态，为企业提供完整的AI工具链</p>
+
+            <div class="tools-grid reveal">
+                <div class="tool-item">
+                    <div class="tool-name">GPT</div>
+                    <div class="tool-vendor">OpenAI</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">Claude</div>
+                    <div class="tool-vendor">Anthropic</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">Gemini</div>
+                    <div class="tool-vendor">Google</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">Cursor</div>
+                    <div class="tool-vendor">AI编程</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">Windsurf</div>
+                    <div class="tool-vendor">AI编程</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">Perplexity</div>
+                    <div class="tool-vendor">AI搜索</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">Suno</div>
+                    <div class="tool-vendor">AI音乐</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">Pika</div>
+                    <div class="tool-vendor">AI视频</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">Runway</div>
+                    <div class="tool-vendor">AI视频</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">Gamma</div>
+                    <div class="tool-vendor">AI PPT</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">Notion AI</div>
+                    <div class="tool-vendor">文档</div>
+                </div>
+                <div class="tool-item">
+                    <div class="tool-name">+ 100+</div>
+                    <div class="tool-vendor">更多工具</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industries -->
+    <section id="industries">
+        <div class="container">
+            <div class="section-label reveal">Solutions</div>
+            <h2 class="section-title reveal">行业解决方案</h2>
+
+            <div class="industries-grid reveal">
+                <div class="industry-item">
+                    <div class="industry-icon">&#9881;</div>
+                    <div class="industry-name">钢铁/制造</div>
+                </div>
+                <div class="industry-item">
+                    <div class="industry-icon">&#127891;</div>
+                    <div class="industry-name">教育</div>
+                </div>
+                <div class="industry-item">
+                    <div class="industry-icon">&#128722;</div>
+                    <div class="industry-name">零售</div>
+                </div>
+                <div class="industry-item">
+                    <div class="industry-icon">&#128176;</div>
+                    <div class="industry-name">金融</div>
+                </div>
+                <div class="industry-item">
+                    <div class="industry-icon">&#10084;</div>
+                    <div class="industry-name">医疗健康</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients -->
+    <section id="clients">
+        <div class="container">
+            <div class="section-label reveal">Clients</div>
+            <h2 class="section-title reveal">客户案例</h2>
+
+            <div class="clients-grid reveal">
+                <div class="client-card">
+                    <div class="client-name">西瓜传媒</div>
+                    <div class="client-industry">MCN</div>
+                    <div class="client-result">中南地区头部MCN，AI赋能后内容产能大幅提升，人力成本显著降低</div>
+                </div>
+                <div class="client-card">
+                    <div class="client-name">映客直播</div>
+                    <div class="client-industry">互娱</div>
+                    <div class="client-result">头部互娱平台，为其打造AI主播矩阵，助力业务增长</div>
+                </div>
+                <div class="client-card">
+                    <div class="client-name">上市集团</div>
+                    <div class="client-industry">多元化</div>
+                    <div class="client-result">行业领军企业，AI助力业务效率提升，实现数字化转型升级</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="cta-glow"></div>
+        <div class="cta-content">
+            <h2 class="reveal">让AI成为你的核心竞争力</h2>
+            <p class="reveal">连接全球最前沿的AI能力，帮你从"知道AI"到"用好AI"</p>
+            <a href="#" class="cta-button reveal">联系我们 &rarr;</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">ZHIYAN</div>
+            <div class="footer-copy">&copy; 2026 智焰科技 ZHIYAN TECH. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Constellation Background
+        const canvas = document.getElementById('constellation');
+        const ctx = canvas.getContext('2d');
+        let w, h, pts = [], shootingStars = [];
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        // Create stars
+        for (let i = 0; i < 100; i++) {
+            pts.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                vx: (Math.random() - 0.5) * 0.1,
+                vy: (Math.random() - 0.5) * 0.1,
+                r: Math.random() * 1.5 + 0.3,
+                brightness: Math.random() * 0.5 + 0.3
+            });
+        }
+
+        // Shooting stars
+        function createShootingStar() {
+            if (Math.random() > 0.995) {
+                shootingStars.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h * 0.5,
+                    vx: Math.random() * 3 + 2,
+                    vy: Math.random() * 2 + 1,
+                    length: Math.random() * 80 + 40,
+                    alpha: 1
+                });
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, w, h);
+
+            // Draw stars
+            for (let i = 0; i < pts.length; i++) {
+                const p = pts[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0) p.x = w;
+                if (p.x > w) p.x = 0;
+                if (p.y < 0) p.y = h;
+                if (p.y > h) p.y = 0;
+
+                const twinkle = Math.sin(Date.now() * 0.003 + i) * 0.2 + 0.8;
+
+                if (p.r > 1) {
+                    ctx.beginPath();
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
+                    gradient.addColorStop(0, `rgba(255, 255, 255, ${p.brightness * twinkle})`);
+                    gradient.addColorStop(0.3, `rgba(255, 255, 255, ${p.brightness * twinkle * 0.5})`);
+                    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                    ctx.fillStyle = gradient;
+                    ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.brightness * twinkle})`;
+                ctx.fill();
+            }
+
+            // Constellation lines
+            for (let i = 0; i < pts.length; i++) {
+                const p = pts[i];
+                for (let j = i + 1; j < pts.length; j++) {
+                    const q = pts[j];
+                    const dx = p.x - q.x;
+                    const dy = p.y - q.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 100) {
+                        const alpha = 0.03 * (1 - dist / 100);
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(q.x, q.y);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Shooting stars
+            createShootingStar();
+
+            for (let i = shootingStars.length - 1; i >= 0; i--) {
+                const star = shootingStars[i];
+                star.x += star.vx;
+                star.y += star.vy;
+                star.alpha -= 0.015;
+
+                if (star.alpha <= 0) {
+                    shootingStars.splice(i, 1);
+                    continue;
+                }
+
+                ctx.beginPath();
+                const gradient = ctx.createLinearGradient(
+                    star.x, star.y,
+                    star.x - star.length, star.y - star.length * 0.5
+                );
+                gradient.addColorStop(0, `rgba(255, 255, 255, ${star.alpha})`);
+                gradient.addColorStop(0.5, `rgba(255, 200, 150, ${star.alpha * 0.5})`);
+                gradient.addColorStop(1, 'rgba(255, 150, 100, 0)');
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 1.5;
+                ctx.moveTo(star.x, star.y);
+                ctx.lineTo(star.x - star.length, star.y - star.length * 0.5);
+                ctx.stroke();
+            }
+
+            requestAnimationFrame(draw);
+        }
+        draw();
+
+        // Reveal Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const t = document.querySelector(a.getAttribute('href'));
+                if (t) t.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
